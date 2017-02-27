@@ -14,8 +14,10 @@ var y3 = PELOTAY;
 var x3 =PELOTAX;
 var vx = 0;
 var vy = 0;
-var puntuacion1 = 0 // puntuacion jugador 1 
-var puntuacion2 = 0 // puntuacion jugador2 
+const PUNTUACION1 = 0 // puntuacion jugador 1 
+const PUNTUACION2 = 0 // puntuacion jugador2 
+var puntuacion1 = PUNTUACION1;
+var puntuacion2= PUNTUACION2
 const DIFERENCIA = y3 - y2; 
  
 
@@ -36,8 +38,7 @@ var jugador1 = function(){
     var ctx = canvas.getContext("2d");
 	ctx.fillStyle = "green";
     ctx.fillRect(x1,y1,w,h);
-    console.log("jugador1")
-    console.log("y1: " + y1 + " x1: " + x1);
+    
 }
     
 
@@ -48,8 +49,7 @@ function jugador2(){
     var ctx = canvas.getContext("2d");
     ctx.fillStyle = "orange";
     ctx.fillRect(x2,y2,w,h);
-	console.log("jugador2");
-    console.log("y2: " + y2 + " x2: " + x2);
+	
 }
 
 function pelota(){
@@ -61,8 +61,7 @@ function pelota(){
 	ctx.stroke();
 	ctx.fill();
 	
-	console.log("pelota");
-    console.log("x3: " + x3, "y3 " + y3);
+	
 }   
 document.onkeydown = function(e) {
     switch (e.keyCode) {
@@ -107,11 +106,8 @@ function timer(){
 		x3 += vx;
         
         var diferencia_pala2 = y3-y2 - DIFERENCIA;
-        vy += diferencia_pala2/12;
-        console.log("posicion y2 " + y2);
-        console.log("posicio_y3" + y3)
-        
-		
+        vy += diferencia_pala2/15;
+        	
    }
    
    
@@ -119,7 +115,7 @@ function timer(){
 		vx = vx * -1;
 		//vx += 0.1;
         var diferencia_pala1 = y3-y1 -DIFERENCIA
-        vy += diferencia_pala1/12 
+        vy += diferencia_pala1/15 
         x3 += vx;
     }
     
@@ -136,12 +132,21 @@ function timer(){
         puntuacion1 += 1;
         var score1 = document.getElementById("score1");
         score1.value = puntuacion1
+        if (puntuacion1 >= 5){
+            alert("The winer is player 1");
+            restart();
+        }
         initcanvas();
     }
     if(x3 <= 0){
         puntuacion2 += 1 
         var score2 = document.getElementById("score2")
         score2.value = puntuacion2;
+        if(puntuacion2>= 5){
+            alert("The winer is player 2");
+            restart();
+        }
+        
         initcanvas();
     }     
     draw();
@@ -149,7 +154,7 @@ function timer(){
 function velocidad(){
 	if (y3<= y1+50 && y1<y3+w && x3 <= x1 + w3 + w && x1<= x3+w){
 		vy = 1;
-		console.log("EFRERetreggdfgfg");
+		
 	}
 }
 function draw(){
@@ -157,10 +162,10 @@ function draw(){
     jugador1();
     jugador2();
     pelota();
-    console.log(x3);
-    console.log(x2);
-    console.log(x1);
+    
 }
+
+    
 function initcanvas() {
     y1 = POSICIONY;
     y2 = POSICIONY;
@@ -173,11 +178,18 @@ function initcanvas() {
     } 
     
 	vy = (Math.random() -0.5) * 3 ;
+ }
+ function restart(){
+    var score1 = document.getElementById("score1");
+    score1.value = 0;
+    var score2 = document.getElementById("score2");
+    score2.value = 0;
+    puntuacion1 = PUNTUACION1;
+    puntuacion2 = PUNTUACION2;
     
-	
-	
-    
-}
+     
+ }
+ 
 window.onload = function(){
     window.setInterval(timer, 10);
 }
